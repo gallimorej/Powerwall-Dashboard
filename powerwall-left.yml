@@ -16,6 +16,10 @@ services:
               target: /var/lib/influxdb-left
         ports:
             - "${INFLUXDB_PORTS:-8096:8086}"
+        logging:
+            options:
+                max-size: "10m"
+                max-file: "3"
 
     pypowerwall-left:
         image: jasonacox/pypowerwall:0.6.2t28
@@ -29,6 +33,10 @@ services:
             - pypowerwall-left.env
         profiles:
             - default
+        logging:
+            options:
+                max-size: "10m"
+                max-file: "3"
 
     telegraf-left:
         image: telegraf:1.28.2
