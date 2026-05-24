@@ -26,6 +26,7 @@ telegraf-left.local
 
 # Auth files
 .auth/
+.auth-left/
 
 # Local Dev files
 *.bak

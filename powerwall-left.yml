@@ -22,15 +22,27 @@ services:
                 max-file: "3"
 
     pypowerwall-left:
-        image: jasonacox/pypowerwall:0.6.2t28
+        image: jasonacox/pypowerwall:0.15.7t89
         container_name: pypowerwall-left
         hostname: pypowerwall-left
         restart: unless-stopped
+        volumes:
+            - type: bind
+              source: .auth-left
+              target: /app/.auth
         user: "${PWD_USER:-1000:1000}"
         ports:
             - "${PYPOWERWALL_PORTS:-8685:8675}"
+        environment:
+            - PW_AUTH_PATH=.auth
         env_file:
             - pypowerwall-left.env
+        healthcheck:
+            test: wget --spider -q http://pypowerwall-left:8675/api/site_info || exit 1
+            interval: 30s
+            timeout: 10s
+            retries: 3
+            start_period: 60s
         profiles:
             - default
         logging:
